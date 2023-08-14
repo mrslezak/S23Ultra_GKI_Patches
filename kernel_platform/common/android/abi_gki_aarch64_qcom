@@ -50,6 +50,7 @@
   backlight_device_set_brightness
   __balance_callbacks
   balance_push_callback
+  bio_associate_blkg
   bio_endio
   bio_end_io_acct_remapped
   bio_start_io_acct
@@ -65,6 +66,7 @@
   bitmap_zalloc
   __blk_alloc_disk
   blk_cleanup_disk
+  blk_cleanup_queue
   blk_execute_rq_nowait
   blk_freeze_queue_start
   blk_get_queue
@@ -75,12 +77,18 @@
   blk_mq_complete_request_remote
   blk_mq_delay_kick_requeue_list
   blk_mq_free_request
+  blk_mq_freeze_queue
   blk_mq_freeze_queue_wait
   blk_mq_freeze_queue_wait_timeout
+  blk_mq_init_queue
+  blk_mq_map_queues
   blk_mq_pci_map_queues
+  blk_mq_requeue_request
   blk_mq_rq_cpu
+  blk_mq_tagset_busy_iter
   blk_mq_tagset_wait_completed_request
   blk_mq_tag_to_rq
+  blk_mq_unfreeze_queue
   blk_mq_update_nr_hw_queues
   blk_put_queue
   blk_put_request
@@ -167,6 +175,7 @@
   __clk_get_name
   clk_get_parent
   clk_get_rate
+  clk_get_sys
   clk_hw_get_flags
   clk_hw_get_name
   clk_hw_get_num_parents
@@ -526,6 +535,7 @@
   dma_map_resource
   dma_map_sg_attrs
   dma_map_sgtable
+  dma_max_mapping_size
   dmam_free_coherent
   dma_release_channel
   dma_request_chan
@@ -541,6 +551,8 @@
   dma_unmap_resource
   dma_unmap_sg_attrs
   do_exit
+  __do_once_done
+  __do_once_start
   do_trace_rcu_torture_read
   double_rq_lock
   do_wait_intr
@@ -853,8 +865,15 @@
   idr_preload
   idr_remove
   idr_replace
+  iio_buffer_init
+  iio_buffer_put
   iio_channel_get
   iio_channel_release
+  iio_device_attach_buffer
+  iio_device_claim_direct_mode
+  iio_device_release_direct_mode
+  iio_push_event
+  iio_push_to_buffers
   iio_read_channel_processed
   iio_write_channel_raw
   import_iovec
@@ -1308,6 +1327,7 @@
   param_array_ops
   param_get_int
   param_get_string
+  param_get_uint
   param_get_ullong
   param_ops_bool
   param_ops_charp
@@ -1316,6 +1336,7 @@
   param_ops_ullong
   param_set_bool
   param_set_copystring
+  param_set_uint
   param_set_uint_minmax
   pci_aer_clear_nonfatal_status
   pcibios_resource_to_bus
@@ -1523,6 +1544,7 @@
   ptp_clock_unregister
   putback_movable_pages
   put_device
+  put_disk
   put_iova_domain
   __put_page
   put_sg_io_hdr
@@ -1532,6 +1554,7 @@
   pwmchip_add
   pwmchip_remove
   qcom_smem_state_get
+  qcom_smem_state_put
   qcom_smem_state_register
   qcom_smem_state_unregister
   qcom_smem_state_update_bits
@@ -1607,6 +1630,7 @@
   rcuwait_wake_up
   rdev_get_drvdata
   reboot_mode
+  rebuild_sched_domains
   reclaim_shmem_address_space
   refcount_dec_and_lock
   refcount_dec_not_one
@@ -2056,6 +2080,7 @@
   __tracepoint_android_rvh_select_task_rq_fair
   __tracepoint_android_rvh_select_task_rq_rt
   __tracepoint_android_rvh_set_balance_anon_file_reclaim
+  __tracepoint_android_rvh_set_cpus_allowed_by_task
   __tracepoint_android_rvh_set_cpus_allowed_ptr_locked
   __tracepoint_android_rvh_set_gfp_zone_flags
   __tracepoint_android_rvh_set_readahead_gfp_mask
@@ -2112,6 +2137,10 @@
   __tracepoint_android_vh_ufs_send_uic_command
   __tracepoint_android_vh_ufs_update_sdev
   __tracepoint_android_vh_update_topology_flags_workfn
+  __tracepoint_android_vh_usb_dev_resume
+  __tracepoint_android_vh_usb_dev_suspend
+  __tracepoint_android_vh_xhci_resume
+  __tracepoint_android_vh_xhci_suspend
   __tracepoint_binder_transaction_received
   __tracepoint_cpu_frequency_limits
   __tracepoint_cpu_idle
@@ -2238,6 +2267,7 @@
   usb_mon_deregister
   usb_mon_register
   usb_phy_set_charger_current
+  usb_pipe_type_check
   usb_put_function_instance
   usb_register_notify
   usb_remove_phy
@@ -2307,6 +2337,7 @@
   wait_for_completion
   wait_for_completion_interruptible
   wait_for_completion_interruptible_timeout
+  wait_for_completion_io_timeout
   wait_for_completion_timeout
   __wait_rcu_gp
   __wake_up

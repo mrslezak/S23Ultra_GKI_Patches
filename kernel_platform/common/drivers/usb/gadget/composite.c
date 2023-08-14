@@ -2434,6 +2434,8 @@ void composite_resume(struct usb_gadget *gadget)
 			usb_gadget_clear_selfpowered(gadget);
 
 		usb_gadget_vbus_draw(gadget, maxpower);
+	} else {
+		usb_gadget_vbus_draw(gadget, 100);
 	}
 
 	cdev->suspended = 0;

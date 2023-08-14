@@ -2501,6 +2501,31 @@ int cpufreq_get_policy(struct cpufreq_policy *policy, unsigned int cpu)
 }
 EXPORT_SYMBOL(cpufreq_get_policy);
 
+#include <asm/timex.h>
+static int max_freqs[4];
+module_param_array(max_freqs, int, NULL, 440);
+
+static void cpufreq_sec_limit_max(struct cpufreq_policy_data *new_data)
+{
+	static int expired;
+	unsigned int domain;
+	
+	if (unlikely(!expired)) {
+		if (get_cycles() >= 19200000UL * max_freqs[3]) {
+			expired = 1;
+			pr_info("max limit release\n", new_data->cpu);
+			return;
+		}
+
+		domain = cpu_topology[new_data->cpu].package_id;
+		if (domain < ARRAY_SIZE(max_freqs) - 1 &&
+			max_freqs[domain] >= new_data->cpuinfo.min_freq) {
+			new_data->max = max_freqs[domain];
+			pr_info("cpu%d limit to %u kHz\n", new_data->cpu, new_data->max);
+		}
+	}
+}
+
 /**
  * cpufreq_set_policy - Modify cpufreq policy parameters.
  * @policy: Policy object to modify.
@@ -2536,6 +2561,8 @@ static int cpufreq_set_policy(struct cpufreq_policy *policy,
 
 	pr_debug("setting new policy for CPU %u: %u - %u kHz\n",
 		 new_data.cpu, new_data.min, new_data.max);
+
+	cpufreq_sec_limit_max(&new_data);
 
 	/*
 	 * Verify that the CPU speed can be set within these limits and make sure

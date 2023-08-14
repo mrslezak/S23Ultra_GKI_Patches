@@ -629,17 +629,22 @@ static inline bool blk_mq_complete_need_ipi(struct request *rq)
 	return cpu_online(rq->mq_ctx->cpu);
 }
 
-static void blk_mq_complete_send_ipi(struct request *rq)
+static int blk_mq_complete_send_ipi(struct request *rq)
 {
 	struct llist_head *list;
 	unsigned int cpu;
+	int ret = 0;
 
 	cpu = rq->mq_ctx->cpu;
 	list = &per_cpu(blk_cpu_done, cpu);
 	if (llist_add(&rq->ipi_list, list)) {
 		INIT_CSD(&rq->csd, __blk_mq_complete_request_remote, rq);
-		smp_call_function_single_async(cpu, &rq->csd);
+		ret = smp_call_function_single_async(cpu, &rq->csd);
+		if (ret)
+			llist_del_all(list);
 	}
+
+	return ret;
 }
 
 static void blk_mq_raise_softirq(struct request *rq)
@@ -664,10 +669,9 @@ bool blk_mq_complete_request_remote(struct request *rq)
 	if (rq->cmd_flags & REQ_HIPRI)
 		return false;
 
-	if (blk_mq_complete_need_ipi(rq)) {
-		blk_mq_complete_send_ipi(rq);
-		return true;
-	}
+	if (blk_mq_complete_need_ipi(rq))
+		if (!blk_mq_complete_send_ipi(rq))
+			return true;
 
 	if (rq->q->nr_hw_queues == 1) {
 		blk_mq_raise_softirq(rq);
