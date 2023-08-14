@@ -3,6 +3,13 @@
 # Cryptographic API
 #
 
+# CMVP functional test
+#ccflags-y += -DCONFIG_CRYPTO_SKC_FIPS_FUNC_TEST
+obj-$(CONFIG_CRYPTO_SKC_FIPS) += fips140_out.o
+obj-$(CONFIG_CRYPTO_SKC_FIPS) += fips140_integrity.o
+obj-$(CONFIG_CRYPTO_SKC_FIPS) += fips140_post.o
+obj-$(CONFIG_CRYPTO_SKC_FIPS) += fips140_test.o
+
 obj-$(CONFIG_CRYPTO) += crypto.o
 crypto-y := api.o cipher.o compress.o memneq.o
 
